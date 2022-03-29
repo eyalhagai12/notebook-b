@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source grade_utils
-TIMEOUT=10
+TIMEOUT=30
 run_in_folder_if_exists "$1"
 
 if [ -z "$DEBUG" ]; then
@@ -14,10 +14,8 @@ i=0
 
 let "i=i+3"
 printf "\n\n### Check $i: all tests should pass\n"
-call make
-grade_command ./test1 
-grade_command ./test2 
-grade_command ./test3 
+call make -f Makefile test
+grade_command ./test
 printf "### Score $i: $grade\n"
 total=$((total + grade * 3))
 
@@ -40,3 +38,4 @@ printf "\n\nGrade: $total\n\n"
 if [ -z "$DEBUG" ]; then
 	make -f Makefile --silent clean
 fi
+
