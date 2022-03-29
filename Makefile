@@ -2,7 +2,7 @@
 # This Makefile can handle any set of cpp and hpp files.
 # To use it, you should put all your cpp and hpp files in the SOURCE_PATH folder.
 
-CXX=clang++
+CXX=clang++-9
 CXXVERSION=c++2a
 SOURCE_PATH=sources
 OBJECT_PATH=objects
@@ -26,7 +26,7 @@ test3: TestRunner.o StudentTest3.o  $(OBJECTS)
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
 %.o: %.cpp $(HEADERS)
-	$(CXX) $(CXXFLAGS) --compile $< -o $@
+	$(CXX) $(CXXFLAGS) --compile -g $< -o $@
 
 $(OBJECT_PATH)/%.o: $(SOURCE_PATH)/%.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) --compile $< -o $@
@@ -43,9 +43,14 @@ StudentTest3.cpp:  # Ofri Tavor
 tidy:
 	clang-tidy $(SOURCES) $(TIDY_FLAGS) --
 
-valgrind: test
+valgrind: test1
 	valgrind --tool=memcheck $(VALGRIND_FLAGS) ./test1 2>&1 | { egrep "lost| at " || true; }
+
+main: main.o $(OBJECTS) $(HEADERS)
+	clang++-9 -o main main.o $(OBJECTS)
+
 
 clean:
 	rm -f $(OBJECTS) *.o test* 
 	rm -f StudentTest*.cpp
+	rm main

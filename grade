@@ -14,8 +14,10 @@ i=0
 
 let "i=i+3"
 printf "\n\n### Check $i: all tests should pass\n"
-call make -f Makefile test
-grade_command ./test
+call make
+grade_command ./test1 
+grade_command ./test2 
+grade_command ./test3 
 printf "### Score $i: $grade\n"
 total=$((total + grade * 3))
 
